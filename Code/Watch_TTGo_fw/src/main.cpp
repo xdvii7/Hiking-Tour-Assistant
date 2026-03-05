@@ -90,21 +90,21 @@ void sendSessionBT()
 }
 
 
-void saveIdToFile(uint16_t id)
+void saveIdToFile(uint16_t id) //UNUSED
 {
     char buffer[10];
     itoa(id, buffer, 10);
     writeFile(LITTLEFS, "/id.txt", buffer);
 }
 
-void saveStepsToFile(uint32_t step_count)
+void saveStepsToFile(uint32_t step_count) //UNUSED
 {
     char buffer[10];
     itoa(step_count, buffer, 10);
     writeFile(LITTLEFS, "/steps.txt", buffer);
 }
 
-void saveDistanceToFile(float distance)
+void saveDistanceToFile(float distance) //UNUSED
 {
     char buffer[10];
     itoa(distance, buffer, 10);
