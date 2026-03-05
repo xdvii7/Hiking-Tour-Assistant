@@ -234,30 +234,40 @@ void loop()
     }
     case 2:
     {
-        /* Hiking session initalisation */
+        /* Hiking session initalisation */ 
         
+        //reset step-counter
+        sensor->resetStepCounter();
+
+        watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
+        watch->tft->drawString("Starting hike", 45, 100);
+        delay(1000);       
         state = 3;
         break;
     }
     case 3:
     {
         /* Hiking session ongoing */
-
-        watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
-        watch->tft->drawString("Starting hike", 45, 100);
         delay(1000);
         watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
-
         watch->tft->setCursor(45, 70);
-        watch->tft->print("Steps: 0");
+        watch->tft->print(String("Steps:") + sensor->getCounter());
 
         watch->tft->setCursor(45, 100);
-        watch->tft->print("Dist: 0 km");
+        watch->tft->print(String("Dist: ") + sensor->getCounter() * 0.0008 + " km");
 
         last = millis();
         updateTimeout = 0;
 
-        //reset step-counter
+        if (irqButton) {
+                irqButton = false;
+                state = 4;
+                watch->power->readIRQ();
+                watch->power->clearIRQ();
+
+
+        }
+        break;
     }
     case 4:
     {
