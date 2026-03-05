@@ -8,6 +8,9 @@
 //OWN ADDINGS!!!-------------
 uint32_t last = 0;
 uint32_t updateTimeout = 0;
+
+uint32_t sessionStartTime = 0;
+uint32_t sessionDuration = 0;
 //---------------------------
 
 // Bluetooth Serial object
@@ -40,6 +43,16 @@ void initHikeWatch()
     // Enable BMA423 step count feature
     // Reset steps
     // Turn on step interrupt
+    if (!watch->bma->begin()) {
+    Serial.println("BMA423 init failed");
+    return;
+    }
+    watch->bma->enableAccel();
+    watch->bma->enableFeature(BMA423_STEP_CNTR, true);
+    watch->bma->resetStepCounter();
+    //watch->bma->enableIrq(BMA423_STEP_CNTR_INT);
+    watch->bma->enableStepCountInterrupt();
+
 
     // Side button
     pinMode(AXP202_INT, INPUT_PULLUP);
@@ -110,6 +123,15 @@ void saveDistanceToFile(float distance) //UNUSED
     itoa(distance, buffer, 10);
     writeFile(LITTLEFS, "/distance.txt", buffer);
 }
+
+//OWN ADDING
+void saveTimeToFile(int hours, int minutes, int seconds)
+{
+    char buffer[20];
+    snprintf(buffer, sizeof(buffer), "%02d:%02d:%02d", hours, minutes, seconds);
+    writeFile(LITTLEFS, "/time.txt", buffer);
+}
+//OWN ADDING END
 
 void deleteSession()
 {
@@ -241,7 +263,9 @@ void loop()
 
         watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
         watch->tft->drawString("Starting hike", 45, 100);
-        delay(1000);       
+        sessionStartTime = millis();
+        delay(1000);
+        watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
         state = 3;
         break;
     }
@@ -249,15 +273,28 @@ void loop()
     {
         /* Hiking session ongoing */
         delay(1000);
-        watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
-        watch->tft->setCursor(45, 70);
-        watch->tft->print(String("Steps:") + sensor->getCounter());
+        watch->tft->setCursor(25, 70);
+        watch->tft->print(String("Steps: ") + sensor->getCounter());
 
-        watch->tft->setCursor(45, 100);
+        watch->tft->setCursor(25, 100);
         watch->tft->print(String("Dist: ") + sensor->getCounter() * 0.0008 + " km");
 
         last = millis();
         updateTimeout = 0;
+
+        sessionDuration = millis() - sessionStartTime;
+        uint32_t totalSeconds = sessionDuration / 1000;
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+        watch->tft->setCursor(25, 130);
+        //watch->tft->print(String("Duration: ") + hours + ":" + minutes + ":" + seconds);
+        watch->tft->print(
+            String("Duration: ") +
+            (hours < 10 ? "0" : "") + String(hours) + ":" +
+            (minutes < 10 ? "0" : "") + String(minutes) + ":" +
+            (seconds < 10 ? "0" : "") + String(seconds)
+            );
 
         if (irqButton) {
                 irqButton = false;
@@ -278,8 +315,17 @@ void loop()
         saveIdToFile(sessionId);
         saveStepsToFile(sensor->getCounter());
         saveDistanceToFile(sensor->getCounter() * 0.0008); // /(km)
-        //OWN ADDINGS END----------
 
+        //time
+        sessionDuration = millis() - sessionStartTime;
+        uint32_t totalSeconds = sessionDuration / 1000;
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+        saveTimeToFile(hours, minutes, seconds);
+
+        sessionStored = true;
+        //OWN ADDINGS END----------
         state = 1;  
         break;
     }
