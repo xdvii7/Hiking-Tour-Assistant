@@ -5,7 +5,7 @@
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif
 
-//OWN ADDIGNS!!!-------------
+//OWN ADDINGS!!!-------------
 uint32_t last = 0;
 uint32_t updateTimeout = 0;
 //---------------------------
@@ -263,6 +263,13 @@ void loop()
     {
         //Save hiking session data
         delay(1000);
+
+        // OWN ADDINGS-------------
+        saveIdToFile(sessionId);
+        saveStepsToFile(sensor->getCounter());
+        saveDistanceToFile(sensor->getCounter() * 0.0008); // /(km)
+        //OWN ADDINGS END----------
+
         state = 1;  
         break;
     }
