@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hike Sessions</title>
+</head>
+<body>
+    <h1>Hiking Sessions</h1>
+
+    <ul>
+        {% for session in sessions %}
+            <li>
+                ID: {{ session.id }} |
+                KM: {{ session.km }} |
+                Steps: {{ session.steps }} |
+                Kcal: {{ session.kcal }}
+            </li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
