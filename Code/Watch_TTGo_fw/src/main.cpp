@@ -316,6 +316,7 @@ void loop()
         saveStepsToFile(sensor->getCounter());
         saveDistanceToFile(sensor->getCounter() * 0.0008); // /(km)
 
+        
         //time
         sessionDuration = millis() - sessionStartTime;
         uint32_t totalSeconds = sessionDuration / 1000;
