@@ -141,7 +141,7 @@ void deleteSession()
     deleteFile(LITTLEFS, "/distance.txt");
     deleteFile(LITTLEFS, "/steps.txt");
     deleteFile(LITTLEFS, "/coord.txt");
-    deleteFIle(LITTLEFS, "/time.txt");
+    deleteFile(LITTLEFS, "/time.txt");
 }
 
 void setup()
