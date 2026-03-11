@@ -26,11 +26,6 @@ def get_session_by_id(id):
     session = hdb.get_session(id)
     return jsonify(hike.to_list(session))
 
-@app.route('/sessions/<id>/delete')
-def delete_session(id):
-    hdb.delete(id)
-    print(f'DELETED SESSION WITH ID: {id}')
-    return Response(status=202)
 
 @app.route('/sessions/<id>/delete', methods=["POST"])
 def delete_session(id):
