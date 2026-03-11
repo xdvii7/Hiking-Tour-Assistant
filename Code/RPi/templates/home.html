@@ -13,6 +13,10 @@
                 KM: {{ session.km }} |
                 Steps: {{ session.steps }} |
                 Kcal: {{ session.kcal }}
+
+                <form action="/sessions/{{ session.id }}/delete" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
             </li>
         {% endfor %}
     </ul>
