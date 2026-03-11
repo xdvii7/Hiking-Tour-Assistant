@@ -144,6 +144,10 @@ class HubBluetooth:
         hs.id     = int(parts[0])
         hs.steps  = int(parts[1])
         hs.km     = float(parts[2])
+        """
+        Handle time parts
+        """
+        hs.time = str(parts[3])
         hs.calc_kcal() # calories calculated by hike.calc_kcal() methods, lazy execution
 
         def cvt_coord(c):
