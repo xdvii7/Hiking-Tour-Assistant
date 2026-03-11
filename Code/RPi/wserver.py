@@ -32,5 +32,11 @@ def delete_session(id):
     print(f'DELETED SESSION WITH ID: {id}')
     return Response(status=202)
 
+@app.route('/sessions/<id>/delete', methods=["POST"])
+def delete_session(id):
+    hdb.delete(id)
+    print(f'DELETED SESSION WITH ID: {id}')
+    return redirect("/")
+    
 if __name__ == "__main__":
     app.run('0.0.0.0', debug=True)
