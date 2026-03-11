@@ -12,6 +12,7 @@ DB_SESSION_TABLE = {
         "km integer",
         "steps integer",
         "burnt_kcal integer",
+        "time text"
     ]
 }
 
