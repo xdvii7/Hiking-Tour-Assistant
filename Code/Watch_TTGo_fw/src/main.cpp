@@ -98,6 +98,9 @@ void sendSessionBT()
     // Sending distance
     sendDataBT(LITTLEFS, "/distance.txt");
     SerialBT.write(';');
+    // Sending duration
+    sendDataBT(LITTLEFS, "/time.txt");
+    SerialBT.write(';');
     // Send connection termination char
     SerialBT.write('\n');
 }
@@ -117,7 +120,7 @@ void saveStepsToFile(uint32_t step_count) //UNUSED
     writeFile(LITTLEFS, "/steps.txt", buffer);
 }
 
-void saveDistanceToFile(float distance) //UNUSED
+void saveDistanceToFile(float distance) //UNUSED ????
 {
     char buffer[10];
     itoa(distance, buffer, 10);
@@ -125,10 +128,16 @@ void saveDistanceToFile(float distance) //UNUSED
 }
 
 //OWN ADDING
-void saveTimeToFile(int hours, int minutes, int seconds)
+//void saveTimeToFile(int hours, int minutes, int seconds)
+// {
+//     char buffer[20];
+//     snprintf(buffer, sizeof(buffer), "%02d:%02d:%02d", hours, minutes, seconds);
+//     writeFile(LITTLEFS, "/time.txt", buffer);
+// }
+void saveTimeToFile(uint32_t seconds)
 {
     char buffer[20];
-    snprintf(buffer, sizeof(buffer), "%02d:%02d:%02d", hours, minutes, seconds);
+    itoa(seconds, buffer, 20);
     writeFile(LITTLEFS, "/time.txt", buffer);
 }
 //OWN ADDING END
@@ -139,6 +148,8 @@ void deleteSession()
     deleteFile(LITTLEFS, "/distance.txt");
     deleteFile(LITTLEFS, "/steps.txt");
     deleteFile(LITTLEFS, "/coord.txt");
+    deleteFile(LITTLEFS, "/time.txt");
+
 }
 
 void setup()
@@ -318,11 +329,8 @@ void loop()
 
         //time
         sessionDuration = millis() - sessionStartTime;
-        uint32_t totalSeconds = sessionDuration / 1000;
-        int hours = totalSeconds / 3600;
-        int minutes = (totalSeconds % 3600) / 60;
-        int seconds = totalSeconds % 60;
-        saveTimeToFile(hours, minutes, seconds);
+        uint32_t seconds = sessionDuration / 1000;
+        saveTimeToFile(seconds);
 
         sessionStored = true;
         //OWN ADDINGS END----------
