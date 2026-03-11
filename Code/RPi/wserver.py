@@ -30,6 +30,7 @@ def get_session_by_id(id):
 
 @app.route('/sessions/<id>/delete', methods=["POST"])
 def delete_session(id):
+    id = (int) id
     hdb.delete(id)
     print(f'DELETED SESSION WITH ID: {id}')
     return redirect("/")
