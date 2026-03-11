@@ -2,6 +2,7 @@ from flask import Flask
 from flask import render_template
 from flask import jsonify
 from flask import Response
+from flask import redirect
 
 import db
 import hike
