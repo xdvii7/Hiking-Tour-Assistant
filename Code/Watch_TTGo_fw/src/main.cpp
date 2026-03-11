@@ -98,6 +98,8 @@ void sendSessionBT()
     // Sending distance
     sendDataBT(LITTLEFS, "/distance.txt");
     SerialBT.write(';');
+    sendDataBT(LITTLEFS, "/time.txt");
+    SerialBT.write(';');
     // Send connection termination char
     SerialBT.write('\n');
 }
@@ -139,6 +141,7 @@ void deleteSession()
     deleteFile(LITTLEFS, "/distance.txt");
     deleteFile(LITTLEFS, "/steps.txt");
     deleteFile(LITTLEFS, "/coord.txt");
+    deleteFIle(LITTLEFS, "/time.txt");
 }
 
 void setup()
