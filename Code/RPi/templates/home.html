@@ -10,9 +10,9 @@
         {% for session in sessions %}
             <li>
                 ID: {{ session.id }} |
-                KM: {{ session.km }} |
+                KM: {{ "%.2f"|format(session.km) }} |
                 Steps: {{ session.steps }} |
-                Kcal: {{ session.kcal }} |
+                Kcal: {{ "%.2f"|format(session.kcal) }} |
                 Time: {{ session.time }}
 
                 <form action="/sessions/{{ session.id }}/delete" method="post" style="display:inline;">
