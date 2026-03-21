@@ -6,7 +6,7 @@ class HikeSession:
     km = 0
     steps = 0
     kcal = -1
-    time = "00:00:00"
+    duration = 0
     coords = []
 
     # represents a computationally intensive calculation done by lazy execution.
@@ -14,10 +14,10 @@ class HikeSession:
         self.kcal = MET_HIKING * KCAL_PER_STEP * self.steps
 
     def __repr__(self):
-        return f"HikeSession{{{self.id}, {self.km}(km), {self.steps}(steps), {self.kcal:.2f}(kcal), {self.time} (hours:minutes:seconds}}"
+        return f"HikeSession{{{self.id}, {self.km}(km), {self.steps}(steps), {self.kcal:.2f}(kcal), {self.duration} (seconds)}}"
 
 def to_list(s: HikeSession) -> list:
-    return [s.id, s.km, s.steps, s.kcal, s.time]
+    return [s.id, s.km, s.steps, s.kcal, s.duration]
 
 def from_list(l: list) -> HikeSession:
     s = HikeSession()
@@ -25,5 +25,5 @@ def from_list(l: list) -> HikeSession:
     s.km = l[1]
     s.steps = l[2]
     s.kcal = l[3]
-    s.time = l[4]
+    s.duration = l[4]
     return s
