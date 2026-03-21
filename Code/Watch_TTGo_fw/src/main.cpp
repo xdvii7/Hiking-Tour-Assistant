@@ -149,7 +149,6 @@ void deleteSession()
     deleteFile(LITTLEFS, "/steps.txt");
     deleteFile(LITTLEFS, "/coord.txt");
     deleteFile(LITTLEFS, "/time.txt");
-
 }
 
 void setup()
