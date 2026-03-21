@@ -1,4 +1,4 @@
-MET_HIKING = 6
+HMET_HIKING = 6
 KCAL_PER_STEP = 0.04
 
 class HikeSession:
