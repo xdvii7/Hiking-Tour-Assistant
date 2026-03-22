@@ -5,13 +5,13 @@ class HikeSession:
     id = 0
     km = 0
     steps = 0
-    kcal:int = -1
+    kcal = -1
     duration = 0 
     coords = []
 
     # represents a computationally intensive calculation done by lazy execution.
     def calc_kcal(self):
-        self.kcal = MET_HIKING * KCAL_PER_STEP * self.steps
+        self.kcal = int(MET_HIKING * KCAL_PER_STEP * self.steps)
 
     def durationFormatted(self):
         h = self.duration // 3600
