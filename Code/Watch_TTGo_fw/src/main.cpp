@@ -151,6 +151,19 @@ void deleteSession()
     deleteFile(LittleFS, "/time.txt");
 }
 
+void drawStatusBar()
+{
+    static int lastPer = -1;
+    int per = watch->power->getBattPercentage();
+
+    if(true) {
+        watch->tft->setTextSize(1);
+        watch->tft->setTextColor(TFT_WHITE, TFT_BLACK);
+        watch->tft->drawString(String(per) + "%", 179, 2, 2);
+        lastPer = per;
+    }
+}
+
 void setup()
 {
     Serial.begin(115200);
@@ -186,17 +199,20 @@ void loop()
         /* Initial stage */
         //Basic interface
         watch->tft->fillScreen(TFT_BLACK);
+        drawStatusBar();
         watch->tft->setTextFont(4);
         watch->tft->setTextColor(TFT_WHITE, TFT_BLACK);
-        watch->tft->drawString("Hiking Watch",  45, 25, 4);
-        watch->tft->drawString("Press button", 50, 80);
-        watch->tft->drawString("to start session", 40, 110);
+        watch->tft->drawString("Hiking Watch",  45, 50, 4);
+        watch->tft->drawString("Press button", 50, 110);
+        watch->tft->drawString("to start session", 40, 140);
 
         bool exitSync = false;
 
         //Bluetooth discovery
         while (1)
         {
+            drawStatusBar();
+
             /* Bluetooth sync */
             if (SerialBT.available())
             {
@@ -243,9 +259,10 @@ void loop()
             {
                 delay(1000);
                 watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
-                watch->tft->drawString("Hiking Watch",  45, 25, 4);
-                watch->tft->drawString("Press button", 50, 80);
-                watch->tft->drawString("to start session", 40, 110);
+                drawStatusBar();
+                watch->tft->drawString("Hiking Watch",  45, 50, 4);
+                watch->tft->drawString("Press button", 50, 110);
+                watch->tft->drawString("to start session", 40, 140);
                 exitSync = false;
             }
 
@@ -263,6 +280,7 @@ void loop()
                 if (sessionStored)
                 {
                     watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
+                    drawStatusBar();
                     watch->tft->drawString("Overwriting",  55, 100, 4);
                     watch->tft->drawString("session", 70, 130);
                     delay(1000);
@@ -291,6 +309,7 @@ void loop()
     {
         /* Hiking session ongoing */
         delay(1000);
+        drawStatusBar();
         watch->tft->setCursor(25, 70);
         watch->tft->print(String("Steps: ") + sensor->getCounter());
 
