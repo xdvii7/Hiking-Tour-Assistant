@@ -106,24 +106,24 @@ void sendSessionBT()
 }
 
 
-void saveIdToFile(uint16_t id) //UNUSED
+void saveIdToFile(uint16_t id)
 {
     char buffer[10];
     itoa(id, buffer, 10);
     writeFile(LittleFS, "/id.txt", buffer);
 }
 
-void saveStepsToFile(uint32_t step_count) //UNUSED
+void saveStepsToFile(uint32_t step_count)
 {
     char buffer[10];
     itoa(step_count, buffer, 10);
     writeFile(LittleFS, "/steps.txt", buffer);
 }
 
-void saveDistanceToFile(float distance) //UNUSED ????
+void saveDistanceToFile(float distance)
 {
     char buffer[10];
-    itoa(distance, buffer, 10);
+    dtostrf(distance, 6, 2, buffer);
     writeFile(LittleFS, "/distance.txt", buffer);
 }
 
@@ -137,7 +137,7 @@ void saveDistanceToFile(float distance) //UNUSED ????
 void saveTimeToFile(uint32_t seconds)
 {
     char buffer[20];
-    itoa(seconds, buffer, 20);
+    itoa(seconds, buffer, 10);
     writeFile(LittleFS, "/time.txt", buffer);
 }
 //OWN ADDING END
@@ -151,10 +151,19 @@ void deleteSession()
     deleteFile(LittleFS, "/time.txt");
 }
 
+int getBatteryPercent()
+{
+    float voltage = watch->power->getBattVoltage()/ 1000.0;
+
+    if (voltage > 4.2) voltage = 4.2;
+    if (voltage < 3.3) voltage = 3.3;
+    return (voltage - 3.3)/(4.2 - 3.3) *100;
+}
+
 void drawStatusBar()
 {
     static int lastPer = -1;
-    int per = watch->power->getBattPercentage();
+    int per = getBatteryPercent();
 
     if(true) {
         watch->tft->setTextSize(1);
@@ -175,7 +184,10 @@ void setup()
 
     if (watch->bma == NULL) {
     Serial.println("BMA pointer is NULL!");
-}
+    }
+
+    watch->power->adc1Enable(AXP202_BATT_VOL_ADC1, true);
+
     watch->openBL();
     Serial.println("Backlight on");
 
