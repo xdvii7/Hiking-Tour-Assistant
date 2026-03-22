@@ -33,7 +33,7 @@ bool sessionSent = false;
 void initHikeWatch()
 {
     // LittleFS
-    if(!LITTLEFS.begin(FORMAT_LITTLEFS_IF_FAILED)){
+    if(!LittleFS.begin(FORMAT_LITTLEFS_IF_FAILED)){
         Serial.println("LITTLEFS Mount Failed");
         return;
     }
@@ -90,16 +90,16 @@ void sendSessionBT()
     watch->tft->drawString("to Hub", 80, 110);
 
     // Sending session id
-    sendDataBT(LITTLEFS, "/id.txt");
+    sendDataBT(LittleFS, "/id.txt");
     SerialBT.write(';');
     // Sending steps
-    sendDataBT(LITTLEFS, "/steps.txt");
+    sendDataBT(LittleFS, "/steps.txt");
     SerialBT.write(';');
     // Sending distance
-    sendDataBT(LITTLEFS, "/distance.txt");
+    sendDataBT(LittleFS, "/distance.txt");
     SerialBT.write(';');
     // Sending duration
-    sendDataBT(LITTLEFS, "/time.txt");
+    sendDataBT(LittleFS, "/time.txt");
     SerialBT.write(';');
     // Send connection termination char
     SerialBT.write('\n');
@@ -110,21 +110,21 @@ void saveIdToFile(uint16_t id) //UNUSED
 {
     char buffer[10];
     itoa(id, buffer, 10);
-    writeFile(LITTLEFS, "/id.txt", buffer);
+    writeFile(LittleFS, "/id.txt", buffer);
 }
 
 void saveStepsToFile(uint32_t step_count) //UNUSED
 {
     char buffer[10];
     itoa(step_count, buffer, 10);
-    writeFile(LITTLEFS, "/steps.txt", buffer);
+    writeFile(LittleFS, "/steps.txt", buffer);
 }
 
 void saveDistanceToFile(float distance) //UNUSED ????
 {
     char buffer[10];
     itoa(distance, buffer, 10);
-    writeFile(LITTLEFS, "/distance.txt", buffer);
+    writeFile(LittleFS, "/distance.txt", buffer);
 }
 
 //OWN ADDING
@@ -138,17 +138,17 @@ void saveTimeToFile(uint32_t seconds)
 {
     char buffer[20];
     itoa(seconds, buffer, 20);
-    writeFile(LITTLEFS, "/time.txt", buffer);
+    writeFile(LittleFS, "/time.txt", buffer);
 }
 //OWN ADDING END
 
 void deleteSession()
 {
-    deleteFile(LITTLEFS, "/id.txt");
-    deleteFile(LITTLEFS, "/distance.txt");
-    deleteFile(LITTLEFS, "/steps.txt");
-    deleteFile(LITTLEFS, "/coord.txt");
-    deleteFile(LITTLEFS, "/time.txt");
+    deleteFile(LittleFS, "/id.txt");
+    deleteFile(LittleFS, "/distance.txt");
+    deleteFile(LittleFS, "/steps.txt");
+    deleteFile(LittleFS, "/coord.txt");
+    deleteFile(LittleFS, "/time.txt");
 }
 
 void setup()
