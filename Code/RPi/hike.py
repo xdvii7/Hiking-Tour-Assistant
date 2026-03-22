@@ -5,7 +5,7 @@ class HikeSession:
     id = 0
     km = 0
     steps = 0
-    kcal = -1
+    kcal:int = -1
     duration = 0 
     coords = []
 

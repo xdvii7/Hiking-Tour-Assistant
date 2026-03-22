@@ -16,18 +16,21 @@ def get_home():
 
     total_km = 0.0
     total_steps = 0
-    total_kcal = 0.0
-    total_duration = 0.0
+    total_kcal = 0
+    total_duration = 0
 
     for s in sessions:
         total_km += s.km
         total_steps += s.steps
         total_kcal += s.kcal
-        #total_duration += s.time
+        total_duration += s.duration
+
+    #total_durationFormatted = f"{total_duration//3600}h {total_duration%3600//60}min {total_duration%60}s"     #0h 0min 0s 
+    total_durationFormatted = f"{total_duration//3600}h {total_duration%3600//60}min"      #0h 0min
         
     return render_template('home.html', 
                            sessions=sessions, 
-                           total_duration = 1120, 
+                           total_duration = total_durationFormatted, 
                            total_km = total_km, 
                            total_steps = total_steps, 
                            total_kcal = total_kcal)
