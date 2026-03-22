@@ -48,9 +48,9 @@
 
         <div class="col-md-4">
             <div class="card card-stat shadow-sm p-3">
-                <div>Total Distance (km)</div>
+                <div>Total Distance</div>
                 <div class="stat-number">
-                    {{ sessions | sum(attribute='km') | round(2) }}
+                    {{ sessions | sum(attribute='km') | round(2) }} km
                 </div>
             </div>
         </div>
