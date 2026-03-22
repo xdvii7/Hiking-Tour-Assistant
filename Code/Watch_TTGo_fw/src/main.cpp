@@ -154,9 +154,17 @@ void deleteSession()
 void setup()
 {
     Serial.begin(115200);
+    delay(2000);
+    Serial.println("Starting watch...");
     watch = TTGOClass::getWatch();
     watch->begin();
+    Serial.println("Watch begun");
+
+    if (watch->bma == NULL) {
+    Serial.println("BMA pointer is NULL!");
+}
     watch->openBL();
+    Serial.println("Backlight on");
 
     //Receive objects for easy writing
     tft = watch->tft;

@@ -1,5 +1,5 @@
 #include "FS.h"
-#include <LITTLEFS.h>
+#include <LittleFS.h>
 
 #define FORMAT_LITTLEFS_IF_FAILED true
 
