@@ -89,7 +89,7 @@
                         <td>{{ "%.2f"|format(session.km) }}</td>
                         <td>{{ session.steps }}</td>
                         <td>{{ "%.2f"|format(session.kcal) }}</td>
-                        <td>{{ session.duration}}</td>
+                        <td>{{ session.durationFormatted()}}</td>
                         <td>
                             <form action="/sessions/{{ session.id }}/delete" method="post">
                                 <button class="btn btn-sm btn-danger"
